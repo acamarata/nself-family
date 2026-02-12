@@ -1,0 +1,80 @@
+# AI agent directories (private — never commit)
+.ai/
+.claude
+.codex
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE & editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment & credentials (never commit)
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+.secrets/
+secrets/
+*.key
+*.pem
+
+# Project-specific private dirs
+.backend/
+.nself/
+backend/.runtime/
+backend/runtime/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# Cache & temp
+.cache/
+.tmp/
+tmp/
+.wiki-tmp/
+*.tmp
+*.temp
+
+# Test output
+coverage/
+test-results/
+
+# Python
+__pycache__/
+*.pyc
+
+# Rust / Go / misc
+target/
+bin/
+out/
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Planning & working documents (local only)
+TODO.md
+DONE.md
+FEEDBACK.md
+NEXT.md
+TRACKING.md
+PLAN.md
+READY.md
+PROMPT.md
+.claude/

@@ -1,0 +1,23 @@
+name: docs-qa
+
+on:
+  push:
+    paths:
+      - '.wiki/**'
+      - 'README.md'
+      - '.github/workflows/docs-qa.yml'
+  pull_request:
+    paths:
+      - '.wiki/**'
+      - 'README.md'
+      - '.github/workflows/docs-qa.yml'
+
+jobs:
+  docs-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate docs
+        run: bash .wiki/scripts/docs_qa.sh

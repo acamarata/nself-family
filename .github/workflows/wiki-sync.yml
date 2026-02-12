@@ -1,0 +1,20 @@
+name: wiki-sync
+
+on:
+  workflow_dispatch:
+
+jobs:
+  wiki-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate docs
+        run: bash .wiki/scripts/docs_qa.sh
+
+      - name: Sync to GitHub Wiki
+        env:
+          WIKI_REPO: ${{ vars.WIKI_REPO }}
+          WIKI_PUSH_TOKEN: ${{ secrets.WIKI_PUSH_TOKEN }}
+        run: bash .wiki/scripts/wiki_sync.sh

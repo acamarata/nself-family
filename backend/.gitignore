@@ -1,0 +1,16 @@
+# Local private planning context
+.ai/
+
+# Local env files
+.env
+.env.*
+
+# Build outputs
+build/
+dist/
+out/
+coverage/
+
+# Logs
+*.log
+logs/
