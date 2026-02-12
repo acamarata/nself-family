@@ -28,8 +28,8 @@ Open a discussion (not an issue) with:
 
 **Important:** We follow Plan09 — a strict 9-phase development plan. All work is organized into phases. Random PRs will likely be rejected unless they align with the current phase.
 
-1. **Check the current phase:** `.ai/planning/progress/TRACKER.md`
-2. **Read the task definition:** `.ai/planning/phases/phase-N/PHASE.md`
+1. **Check the current phase:** See release milestones on GitHub
+2. **Check open issues:** Issues are tagged by phase (phase-1, phase-2, etc.)
 3. **Ask first:** Open a discussion before starting work
 4. **Follow the dev guide:** See [DEVELOPMENT.md](DEVELOPMENT.md)
 

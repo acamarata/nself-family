@@ -48,7 +48,6 @@ nself-family/
 │   ├── platforms/     # Platform wrappers (desktop, mobile, TV, smart displays)
 │   ├── variants/      # Platform-specific UI components
 │   └── tests/         # Frontend tests
-├── .ai/               # AI agent planning (gitignored)
 ├── .github/           # GitHub Actions workflows
 └── .wiki/             # Public documentation
 ```
@@ -57,8 +56,7 @@ nself-family/
 
 ### 1. Pick a Task
 
-Read `.ai/planning/progress/TRACKER.md` to see current progress.
-Read the phase file for your current task: `.ai/planning/phases/phase-N/PHASE.md`
+Check the current release milestone and open issues on GitHub to see what needs work.
 
 ### 2. Create a Branch
 
@@ -86,7 +84,7 @@ pnpm test:coverage
 
 ### 5. Update Progress
 
-Edit `.ai/planning/progress/TRACKER.md` after completing the task.
+Update the GitHub issue or PR with your progress.
 
 ### 6. Commit
 
@@ -262,7 +260,7 @@ pnpm test
 ## Getting Help
 
 1. Read the wiki: `.wiki/Home.md`
-2. Check phase docs: `.ai/planning/phases/`
+2. Check release milestones on GitHub
 3. Search issues: `gh issue list`
 4. Ask in discussions: `gh discussion create`
 
