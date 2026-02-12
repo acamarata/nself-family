@@ -141,30 +141,99 @@ nself-family/
     └── docs/
 ```
 
-## Quick Start
+## Getting Started
 
-### Run It Yourself
+### Prerequisites
+
+- [ɳSelf CLI](https://github.com/acamarata/nself) installed (`brew install acamarata/nself/nself`)
+- Docker Desktop running
+
+### Run It Yourself (3 Commands)
+
 ```bash
+# 1. Clone this repository
 git clone https://github.com/acamarata/nself-family.git
-cd nself-family
-./backend/scripts/bootstrap.sh
-cd backend && pnpm dev       # Terminal 1
-cd frontend && pnpm dev      # Terminal 2 (when ready)
+cd nself-family/backend
+
+# 2. Initialize with wizard (one-time setup)
+nself init --wizard
+
+# 3. Build and start everything
+nself build && nself start
 ```
 
-Visit `http://localhost:3000` (when frontend is implemented in Phase 3+)
+**That's it!** The ɳSelf CLI automatically:
+
+- ✅ Starts PostgreSQL, Hasura, Redis, MinIO, Auth services
+- ✅ Generates SSL certificates for local development
+- ✅ Configures local DNS (*.local.nself.org → 127.0.0.1)
+- ✅ Starts configured frontend apps with routing
+- ✅ Sets up GraphQL API with subscriptions and real-time
+- ✅ Runs health checks and displays service URLs
+
+### Access Your App
+
+Once started, visit:
+
+**Frontend:**
+
+- [https://family.local.nself.org](https://family.local.nself.org) — ɳFamily app (Phase 3+)
+- [http://localhost:3000](http://localhost:3000) — Direct access (alternative)
+
+**Backend Services:**
+
+- [https://api.local.nself.org](https://api.local.nself.org) — GraphQL API
+- [https://auth.local.nself.org](https://auth.local.nself.org) — Auth service
+- [https://storage.local.nself.org](https://storage.local.nself.org) — MinIO storage
+- [http://localhost:8080](http://localhost:8080) — Hasura Console
+
+### Dual-Mode Architecture
+
+This setup works in **two modes**:
+
+1. **Standalone Mode** (default) — One app, one backend, self-contained
+2. **Monorepo Mode** — Multiple apps sharing one backend:
+
+   ```text
+   monorepo/backend/     # Shared ɳSelf backend
+   ├── nself-family/     # This app (configured as FRONTEND_APP_1)
+   ├── nself-chat/       # Chat app (configured as FRONTEND_APP_2)
+   └── nself-tv/         # TV app (configured as FRONTEND_APP_3)
+   ```
+
+Configure additional apps in `backend/.env`:
+```bash
+FRONTEND_APP_COUNT=3
+
+FRONTEND_APP_1_DISPLAY_NAME="ɳFamily"
+FRONTEND_APP_1_SYSTEM_NAME=family
+FRONTEND_APP_1_PORT=3000
+FRONTEND_APP_1_ROUTE=family.local.nself.org
+
+FRONTEND_APP_2_DISPLAY_NAME="ɳChat"
+FRONTEND_APP_2_SYSTEM_NAME=chat
+FRONTEND_APP_2_PORT=3001
+FRONTEND_APP_2_ROUTE=chat.local.nself.org
+
+# ...and so on
+```
+
+All apps share one backend with SSO, but users have **per-app role assignments** (see [.wiki/34-Database-ERD-and-Schema-Plan.md](.wiki/34-Database-ERD-and-Schema-Plan.md)).
 
 ### Explore the Demo
-Visit **[family.nself.org](https://family.nself.org)** to try the app in demo mode (read-only).
+
+Visit **[family.nself.org](https://family.nself.org)** to try the app in demo mode (read-only exploration).
 
 ### Customize It
+
 1. Fork this repository
-2. Update branding in `.wiki/45-Branding-and-Naming.md`
+2. Update branding in [.wiki/45-Branding-and-Naming.md](.wiki/45-Branding-and-Naming.md)
 3. Configure features in `backend/.env`
-4. Deploy following `.wiki/05-Deployment-Hetzner-Vercel.md`
+4. Deploy following [.wiki/05-Deployment-Hetzner-Vercel.md](.wiki/05-Deployment-Hetzner-Vercel.md)
 
 ### Learn More
-1. Read `.wiki/Home.md` — Start here
-2. Read `.wiki/TOC.md` — Full documentation index
-3. Read `.wiki/00-Getting-Started.md` — Setup guide
-4. Read `.wiki/03-Architecture-Reference.md` — How it works
+
+1. Read [.wiki/Home.md](.wiki/Home.md) — Start here
+2. Read [.wiki/TOC.md](.wiki/TOC.md) — Full documentation index
+3. Read [.wiki/00-Getting-Started.md](.wiki/00-Getting-Started.md) — Setup guide
+4. Read [.wiki/03-Architecture-Reference.md](.wiki/03-Architecture-Reference.md) — How it works

@@ -6,54 +6,68 @@ Demo and self-hostable `nSelf` CLI generated backend stack for the `nself-family
 
 ### Prerequisites
 
-- Node.js 20+
-- pnpm 8+
-- Docker and Docker Compose
+- [ɳSelf CLI](https://github.com/acamarata/nself) installed
+- Docker Desktop running
 
-### Initial Setup
+### Quick Start
 
 ```bash
-# From repository root
-./backend/scripts/bootstrap.sh
+# From this directory (backend/)
+nself init --wizard   # One-time setup
+nself build           # Build configuration and SSL certificates
+nself start           # Start all services
 ```
 
-This will:
-1. Install dependencies with pnpm
-2. Start Docker services (PostgreSQL, Hasura, MinIO, Redis, MailHog)
-3. Copy .env.example to .env if needed
-4. Display service URLs and next steps
+**That's it!** The ɳSelf CLI handles everything:
+
+- PostgreSQL, Hasura, Redis, MinIO, Auth services
+- SSL certificates and local DNS (*.local.nself.org)
+- Health checks and service orchestration
+- Frontend app routing (if configured)
 
 ### Development
 
 ```bash
-# Run backend services (from backend/)
-pnpm dev
+# View service status
+nself status
 
-# Run tests
-pnpm test
+# View logs
+nself logs
+nself logs postgres    # Specific service
+nself logs -f          # Follow logs
 
-# Run tests with coverage
-pnpm test:coverage
+# Restart services
+nself restart
 
-# Type check
-pnpm typecheck
+# Stop services
+nself stop
+
+# Complete teardown
+nself destroy
 ```
 
-### Reset Environment
+### Frontend Development
 
 ```bash
-# From repository root
-./backend/scripts/reset.sh
+# List configured frontend apps
+nself dev frontend list
+
+# Add a new frontend app
+nself dev frontend add myapp --port 3000
+
+# Get environment variables for frontend
+nself dev frontend env myapp
 ```
 
-This will:
-1. Stop and remove all Docker containers
-2. Delete node_modules and .env files
-3. Clean up all development data
+### Service Access
 
-After reset, run `./backend/scripts/bootstrap.sh` to set up again.
+**Local Domains (with SSL):**
 
-### Service Ports
+- [https://api.local.nself.org](https://api.local.nself.org) — GraphQL API
+- [https://auth.local.nself.org](https://auth.local.nself.org) — Auth service
+- [https://storage.local.nself.org](https://storage.local.nself.org) — MinIO storage
+
+**Direct Access (localhost):**
 
 - Auth: `http://localhost:3001`
 - Orchestrator: `http://localhost:3002`
@@ -63,6 +77,52 @@ After reset, run `./backend/scripts/bootstrap.sh` to set up again.
 - Hasura Console: `http://localhost:8080`
 - MinIO Console: `http://localhost:9001` (minioadmin/minioadmin)
 - MailHog UI: `http://localhost:8025`
+
+### Testing
+
+```bash
+# Run unit tests
+pnpm test
+
+# Run tests with coverage
+pnpm test:coverage
+
+# Type check
+pnpm typecheck
+```
+
+### Configuration
+
+All configuration is managed via `.env` files:
+
+- `.env.dev` — Local development (default)
+- `.env.staging` — Staging environment
+- `.env.prod` — Production environment
+
+Key variables:
+
+```bash
+# Project Settings
+PROJECT_NAME=nself-family
+BASE_DOMAIN=local.nself.org
+ENV=dev
+
+# Frontend Apps
+FRONTEND_APP_COUNT=1
+FRONTEND_APP_1_DISPLAY_NAME="ɳFamily"
+FRONTEND_APP_1_SYSTEM_NAME=family
+FRONTEND_APP_1_PORT=3000
+FRONTEND_APP_1_ROUTE=family.local.nself.org
+
+# Database
+POSTGRES_DB=nself_family
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your-secure-password
+
+# Hasura
+HASURA_GRAPHQL_ADMIN_SECRET=your-admin-secret
+HASURA_JWT_KEY=your-jwt-key-min-32-chars
+```
 
 ## Hard Architecture Constraint
 
