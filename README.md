@@ -1,8 +1,20 @@
 # nself-family
 
-Open-source monorepo for `ɳFamily`, built on `ɳSelf` backend foundations.
+**Free and Open-Source Software (FOSS)** — A complete reference implementation of a family application built exclusively with the ɳSelf CLI backend.
 
 Project owner and maintainer: Aric Camarata ([github.com/acamarata](https://github.com/acamarata)).
+
+## Philosophy & Purpose
+
+This repository serves as a **real-world, production-ready example** of what you can build using the ɳSelf CLI as your backend. It demonstrates best practices, architecture patterns, and the "ɳSelf way" of building modern applications.
+
+**Clone. Run. Customize. Done.** — This is a complete working application you can:
+- Clone and run as-is for your family
+- White-label and customize for your community
+- Use as a reference for your own ɳSelf-powered apps
+- Contribute improvements back to the community
+
+**Public Demo:** [family.nself.org](https://family.nself.org) (demo mode — read-only exploration)
 
 ## Scope
 
@@ -28,11 +40,41 @@ Ecosystem integration points (ɳChat deep-links, ɳTV handoff) live in `frontend
 2. `chat.myfamily.com` → ɳChat app (external: `nself-chat`)
 3. `tv.myfamily.com` → ɳTV app (external: `nself-tv`)
 
-## Backend Constraint
+## Backend: The ɳSelf Way (Hard Constraint)
 
-1. Backend architecture is ɳSelf CLI + ɳSelf plugins only.
-2. No backend bypass pattern outside that stack.
-3. Backend capability gaps must be planned explicitly as plugin work.
+This repository **religiously and exclusively** uses the ɳSelf CLI for all backend functionality. This is non-negotiable and by design — we're demonstrating the ɳSelf architecture pattern.
+
+**Rules:**
+1. Backend architecture is 100% ɳSelf CLI + ɳSelf plugins
+2. No ad-hoc services, no bypass patterns, no exceptions
+3. Any backend capability gap must be planned as explicit plugin work
+4. The `/backend` folder is a **complete reference implementation** others can clone
+
+**Why?** To prove you can build real, production-grade applications using only the ɳSelf stack. No shortcuts, no compromises.
+
+## Flexible Architecture
+
+This app is designed to run in **two modes**:
+
+### Standalone Mode
+Clone this repo, run it, done. Everything self-contained:
+```bash
+git clone https://github.com/acamarata/nself-family.git
+cd nself-family
+./backend/scripts/bootstrap.sh
+```
+
+### Monorepo Mode
+Multiple apps (ɳFamily, ɳChat, ɳTV) sharing one backend:
+```
+monorepo/
+├── backend/          # Shared ɳSelf backend
+├── nself-family/     # This app
+├── nself-chat/       # Chat app
+└── nself-tv/         # TV app
+```
+
+All ɳSelf apps must support both patterns. The backend is flexible, apps are modular.
 
 ## Package Manager
 
@@ -101,6 +143,28 @@ nself-family/
 
 ## Quick Start
 
-1. Read `.wiki/Home.md`
-2. Read `.wiki/TOC.md`
-3. Read `.wiki/00-Getting-Started.md`
+### Run It Yourself
+```bash
+git clone https://github.com/acamarata/nself-family.git
+cd nself-family
+./backend/scripts/bootstrap.sh
+cd backend && pnpm dev       # Terminal 1
+cd frontend && pnpm dev      # Terminal 2 (when ready)
+```
+
+Visit `http://localhost:3000` (when frontend is implemented in Phase 3+)
+
+### Explore the Demo
+Visit **[family.nself.org](https://family.nself.org)** to try the app in demo mode (read-only).
+
+### Customize It
+1. Fork this repository
+2. Update branding in `.wiki/45-Branding-and-Naming.md`
+3. Configure features in `backend/.env`
+4. Deploy following `.wiki/05-Deployment-Hetzner-Vercel.md`
+
+### Learn More
+1. Read `.wiki/Home.md` — Start here
+2. Read `.wiki/TOC.md` — Full documentation index
+3. Read `.wiki/00-Getting-Started.md` — Setup guide
+4. Read `.wiki/03-Architecture-Reference.md` — How it works
