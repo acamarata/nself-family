@@ -1,36 +1,32 @@
 import { defineConfig } from 'vitest/config';
+import { resolve } from 'path';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@nself-family/shared': resolve(__dirname, 'packages/shared/src/index.ts'),
+    },
+  },
   test: {
     globals: true,
     environment: 'node',
+    include: ['services/*/src/**/*.test.ts', 'packages/*/src/**/*.test.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
-      include: ['services/*/src/**/*.ts'],
+      include: [
+        'services/*/src/**/*.ts',
+        'packages/*/src/**/*.ts',
+      ],
       exclude: [
         'node_modules/**',
         'dist/**',
         '**/*.test.ts',
         '**/*.spec.ts',
         '**/types/**',
+        '**/index.ts',
       ],
-      // Enforce 100% coverage on changed files
-      // In CI, use git diff to determine changed files
-      thresholds: {
-        lines: 100,
-        branches: 100,
-        functions: 100,
-        statements: 100,
-      },
-      // Enforce 100% coverage on changed files
-      // In CI, use git diff to determine changed files
       all: false,
-      lines: 100,
-      functions: 100,
-      branches: 100,
-      statements: 100,
-      // Changed file enforcement happens via CI script
       thresholds: {
         lines: 100,
         branches: 100,

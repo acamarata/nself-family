@@ -9,21 +9,27 @@ Demo and self-hostable `nSelf` CLI generated backend stack for the `nself-family
 - [ɳSelf CLI](https://github.com/acamarata/nself) installed
 - Docker Desktop running
 
-### Quick Start
+### Quick Start (3 Commands)
 
 ```bash
 # From this directory (backend/)
-nself init --wizard   # One-time setup
-nself build           # Build configuration and SSL certificates
-nself start           # Start all services
+nself build    # Generate docker-compose.yml and SSL certificates
+nself start    # Start all services
 ```
 
 **That's it!** The ɳSelf CLI handles everything:
 
-- PostgreSQL, Hasura, Redis, MinIO, Auth services
+- PostgreSQL, Hasura, Redis, MinIO (S3-compatible storage)
 - SSL certificates and local DNS (*.local.nself.org)
 - Health checks and service orchestration
-- Frontend app routing (if configured)
+- Auto-configuration from .env files
+
+**What's running?** Check with:
+
+```bash
+nself status    # Service health
+nself urls      # Access URLs
+```
 
 ### Development
 
@@ -93,36 +99,48 @@ pnpm typecheck
 
 ### Configuration
 
-All configuration is managed via `.env` files:
+Configuration uses **environment file cascade**:
 
-- `.env.dev` — Local development (default)
-- `.env.staging` — Staging environment
-- `.env.prod` — Production environment
+| File | Purpose | Committed |
+|------|---------|-----------|
+| `.env.dev` | Development defaults (always loaded) | ✅ Yes |
+| `.env.staging` | Staging overrides (ENV=staging) | ✅ Yes |
+| `.env.prod` | Production overrides (ENV=prod) | ✅ Yes |
+| `.env` | Local machine overrides (highest priority) | ❌ No (gitignored) |
 
-Key variables:
+**Loading order**: `.env.dev` → `.env.staging` → `.env.prod` → `.env` (later files override earlier)
+
+**Current environment**: Check with `echo $ENV` or look in `.env`
+
+**Key variables** (from `.env.dev`):
 
 ```bash
-# Project Settings
+# Core Project
 PROJECT_NAME=nself-family
 BASE_DOMAIN=local.nself.org
 ENV=dev
 
-# Frontend Apps
-FRONTEND_APP_COUNT=1
-FRONTEND_APP_1_DISPLAY_NAME="ɳFamily"
-FRONTEND_APP_1_SYSTEM_NAME=family
-FRONTEND_APP_1_PORT=3000
-FRONTEND_APP_1_ROUTE=family.local.nself.org
+# Services
+POSTGRES_ENABLED=true
+HASURA_ENABLED=true
+STORAGE_ENABLED=true
+REDIS_ENABLED=true
 
 # Database
-POSTGRES_DB=nself_family
+POSTGRES_DB=nself_family_dev
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your-secure-password
+POSTGRES_PASSWORD=postgres_dev_password
 
-# Hasura
-HASURA_GRAPHQL_ADMIN_SECRET=your-admin-secret
-HASURA_JWT_KEY=your-jwt-key-min-32-chars
+# GraphQL
+HASURA_GRAPHQL_ADMIN_SECRET=dev-secret-change-in-production
+HASURA_GRAPHQL_JWT_SECRET='{"type":"HS256","key":"dev-jwt-secret-min-32-chars-required"}'
+
+# Frontend App
+FRONTEND_APP_1_ROUTE=family.local.nself.org
+FRONTEND_APP_1_PORT=3000
 ```
+
+**Local overrides**: Edit `.env` (not `.env.dev`) for machine-specific changes
 
 ## Hard Architecture Constraint
 

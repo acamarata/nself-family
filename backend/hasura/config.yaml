@@ -1,0 +1,4 @@
+version: 3
+endpoint: http://localhost:8081
+admin_secret: dev-secret-change-in-production
+metadata_directory: metadata

@@ -1,0 +1,67 @@
+-- Seed: Demo Family + Members + Relationships + Per-App Roles
+-- Creates a realistic family with various roles and relationships
+
+-- Demo family (hardcoded ID for demo mode)
+INSERT INTO public.families (id, name, description, created_by, settings) VALUES
+  ('00000000-0000-0000-0000-000000000001', 'The Nself Family',
+   'A demo family showcasing all ɳFamily features',
+   'u0000000-0000-0000-0000-000000000001',
+   '{"timezone": "America/New_York", "locale": "en-US", "islamic_mode": true}')
+ON CONFLICT DO NOTHING;
+
+-- Family members with various roles
+INSERT INTO public.family_members (family_id, user_id, role, lifecycle_state, display_name) VALUES
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000001', 'OWNER', 'active', 'Fatima'),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000002', 'ADMIN', 'active', 'Ahmad'),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000003', 'ADULT_MEMBER', 'active', 'Khadijah'),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000004', 'ADULT_MEMBER', 'active', 'Yusuf'),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000005', 'YOUTH_MEMBER', 'active', 'Aisha'),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000006', 'CHILD_MEMBER', 'active', 'Ibrahim')
+ON CONFLICT DO NOTHING;
+
+-- Family relationships
+INSERT INTO public.relationships (family_id, user_a_id, user_b_id, relation_type, is_mahram) VALUES
+  -- Fatima & Ahmad are married (mahram)
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000002', 'spouse', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000002', 'u0000000-0000-0000-0000-000000000001', 'spouse', true),
+  -- Khadijah is Fatima's sister (mahram to Ahmad by marriage)
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000003', 'sibling', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000003', 'u0000000-0000-0000-0000-000000000001', 'sibling', true),
+  -- Aisha is child of Fatima & Ahmad (mahram to both parents)
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000005', 'parent', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000005', 'u0000000-0000-0000-0000-000000000001', 'child', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000002', 'u0000000-0000-0000-0000-000000000005', 'parent', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000005', 'u0000000-0000-0000-0000-000000000002', 'child', true),
+  -- Ibrahim is child of Fatima & Ahmad
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000006', 'parent', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000006', 'u0000000-0000-0000-0000-000000000001', 'child', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000002', 'u0000000-0000-0000-0000-000000000006', 'parent', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000006', 'u0000000-0000-0000-0000-000000000002', 'child', true),
+  -- Aisha & Ibrahim are siblings
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000005', 'u0000000-0000-0000-0000-000000000006', 'sibling', true),
+  ('00000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000006', 'u0000000-0000-0000-0000-000000000005', 'sibling', true)
+ON CONFLICT DO NOTHING;
+
+-- Per-app role assignments (demonstrating different roles per app)
+INSERT INTO public.user_app_roles (user_id, app_id, role, permissions) VALUES
+  -- Owner: admin in all apps
+  ('u0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000001', 'admin', '{"manage_family": true, "manage_members": true}'),
+  ('u0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000002', 'admin', '{"manage_channels": true}'),
+  ('u0000000-0000-0000-0000-000000000001', 'a0000000-0000-0000-0000-000000000003', 'admin', '{"manage_content": true}'),
+  -- Admin: admin in family, moderator in chat, user in TV
+  ('u0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000001', 'admin', '{"manage_members": true}'),
+  ('u0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000002', 'moderator', '{"moderate_messages": true}'),
+  ('u0000000-0000-0000-0000-000000000002', 'a0000000-0000-0000-0000-000000000003', 'user', '{}'),
+  -- Helper: user in family, user in chat, viewer in TV
+  ('u0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000001', 'user', '{"helper": true}'),
+  ('u0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000002', 'user', '{}'),
+  ('u0000000-0000-0000-0000-000000000003', 'a0000000-0000-0000-0000-000000000003', 'viewer', '{}'),
+  -- Regular user: user in family and chat only
+  ('u0000000-0000-0000-0000-000000000004', 'a0000000-0000-0000-0000-000000000001', 'user', '{}'),
+  ('u0000000-0000-0000-0000-000000000004', 'a0000000-0000-0000-0000-000000000002', 'user', '{}'),
+  -- Youth: restricted in family, user in chat
+  ('u0000000-0000-0000-0000-000000000005', 'a0000000-0000-0000-0000-000000000001', 'user', '{"content_restricted": true}'),
+  ('u0000000-0000-0000-0000-000000000005', 'a0000000-0000-0000-0000-000000000002', 'user', '{}'),
+  -- Child: restricted in family only
+  ('u0000000-0000-0000-0000-000000000006', 'a0000000-0000-0000-0000-000000000001', 'user', '{"content_restricted": true, "parental_controls": true}')
+ON CONFLICT DO NOTHING;
