@@ -21,6 +21,8 @@ const NAV_ITEMS = [
   { href: '/vault', label: 'Vault', icon: '🔒' },
   { href: '/inheritance', label: 'Legacy', icon: '🏛️' },
   { href: '/search', label: 'Search', icon: '🔍' },
+  { href: '/tv', label: 'TV', icon: '📺' },
+  { href: '/devices', label: 'Devices', icon: '💻' },
   { href: '/admin', label: 'Admin', icon: '⚙️' },
 ] as const;
 
