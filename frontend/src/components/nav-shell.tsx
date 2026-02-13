@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: '/family', label: 'Family', icon: '👨‍👩‍👧‍👦' },
   { href: '/albums', label: 'Albums', icon: '📸' },
   { href: '/calendar', label: 'Calendar', icon: '📅' },
+  { href: '/admin', label: 'Admin', icon: '⚙️' },
 ] as const;
 
 interface NavShellProps {
