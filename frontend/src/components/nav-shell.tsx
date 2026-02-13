@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/auth-store';
 import { NotificationBell } from '@/components/notification-bell';
+import { OfflineIndicator } from '@/components/offline-indicator';
+import { SkipLink } from '@/components/skip-link';
 import type { ReactNode } from 'react';
 
 const NAV_ITEMS = [
@@ -16,6 +18,9 @@ const NAV_ITEMS = [
   { href: '/recipes', label: 'Recipes', icon: '🍳' },
   { href: '/meals', label: 'Meals', icon: '🥗' },
   { href: '/chat', label: 'Chat', icon: '💬' },
+  { href: '/vault', label: 'Vault', icon: '🔒' },
+  { href: '/inheritance', label: 'Legacy', icon: '🏛️' },
+  { href: '/search', label: 'Search', icon: '🔍' },
   { href: '/admin', label: 'Admin', icon: '⚙️' },
 ] as const;
 
@@ -33,6 +38,7 @@ export function NavShell({ children }: NavShellProps) {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <SkipLink />
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-700 dark:bg-slate-900/80">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
@@ -58,7 +64,10 @@ export function NavShell({ children }: NavShellProps) {
       </header>
 
       {/* Main content */}
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">{children}</main>
+      <main id="main-content" className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">{children}</main>
+
+      {/* Offline indicator */}
+      <OfflineIndicator />
 
       {/* Bottom navigation (mobile) */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900 sm:hidden" aria-label="Main navigation">

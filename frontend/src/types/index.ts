@@ -399,6 +399,138 @@ export const NotificationEventSchema = z.object({
 });
 
 // ============================================================================
+// Phase 7: Legacy Vault, Inheritance, Search
+// ============================================================================
+
+export const VAULT_STATUSES = ['active', 'sealed', 'released'] as const;
+export type VaultStatus = (typeof VAULT_STATUSES)[number];
+
+export const RELEASE_CONDITIONS = ['manual', 'time_trigger', 'death_verification'] as const;
+export type ReleaseCondition = (typeof RELEASE_CONDITIONS)[number];
+
+export const AFTER_DEATH_ACTIONS = ['memorialize', 'delete', 'transfer'] as const;
+export type AfterDeathAction = (typeof AFTER_DEATH_ACTIONS)[number];
+
+export const MEMORIAL_STATES = ['active', 'pending_memorial', 'memorialized'] as const;
+export type MemorialState = (typeof MEMORIAL_STATES)[number];
+
+export const VAULT_CONTENT_TYPES = ['letter', 'document', 'media', 'message'] as const;
+export type VaultContentType = (typeof VAULT_CONTENT_TYPES)[number];
+
+export const SEARCH_CONTENT_TYPES = ['post', 'recipe', 'event', 'message', 'member', 'trip', 'photo'] as const;
+export type SearchContentType = (typeof SEARCH_CONTENT_TYPES)[number];
+
+export const LegacyVaultSchema = z.object({
+  id: z.string().uuid(),
+  family_id: z.string().uuid(),
+  owner_id: z.string().uuid(),
+  title: z.string().min(1),
+  description: z.string().nullable(),
+  status: z.enum(VAULT_STATUSES),
+  sealed_at: z.string().nullable(),
+  released_at: z.string().nullable(),
+  release_condition: z.enum(RELEASE_CONDITIONS),
+  release_trigger_at: z.string().nullable(),
+  requires_reauth: z.boolean(),
+  metadata: z.record(z.unknown()).default({}),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const VaultItemSchema = z.object({
+  id: z.string().uuid(),
+  vault_id: z.string().uuid(),
+  content_type: z.string(),
+  title: z.string().nullable(),
+  content: z.string().nullable(),
+  media_id: z.string().uuid().nullable(),
+  sort_order: z.number(),
+  metadata: z.record(z.unknown()).default({}),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const VaultRecipientSchema = z.object({
+  id: z.string().uuid(),
+  vault_id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  message: z.string().nullable(),
+  notified_at: z.string().nullable(),
+  viewed_at: z.string().nullable(),
+  created_at: z.string(),
+  display_name: z.string().nullable().optional(),
+  email: z.string().nullable().optional(),
+});
+
+export const InheritanceScenarioSchema = z.object({
+  id: z.string().uuid(),
+  family_id: z.string().uuid(),
+  owner_id: z.string().uuid(),
+  version: z.number(),
+  input_snapshot: z.record(z.string(), z.unknown()),
+  output_snapshot: z.record(z.string(), z.unknown()),
+  created_at: z.string(),
+});
+
+export const DigitalSuccessorSchema = z.object({
+  id: z.string().uuid(),
+  family_id: z.string().uuid(),
+  owner_id: z.string().uuid(),
+  successor_id: z.string().uuid(),
+  after_death_action: z.enum(AFTER_DEATH_ACTIONS),
+  notes: z.string().nullable(),
+  confirmed_at: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  display_name: z.string().nullable().optional(),
+  email: z.string().nullable().optional(),
+});
+
+export const MemorialProfileSchema = z.object({
+  id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  family_id: z.string().uuid(),
+  state: z.enum(MEMORIAL_STATES),
+  requested_by: z.string().uuid().nullable(),
+  approved_by: z.string().uuid().nullable(),
+  memorial_message: z.string().nullable(),
+  memorial_date: z.string().nullable(),
+  requested_at: z.string().nullable(),
+  approved_at: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const SearchResultSchema = z.object({
+  id: z.string().uuid(),
+  family_id: z.string().uuid(),
+  content_type: z.string(),
+  content_id: z.string().uuid(),
+  title: z.string().nullable(),
+  body: z.string().nullable(),
+  author_id: z.string().uuid().nullable(),
+  visibility: z.string(),
+  metadata: z.record(z.unknown()).default({}),
+  rank: z.number(),
+  headline: z.string(),
+  created_at: z.string(),
+});
+
+export const ActivityLogSchema = z.object({
+  id: z.string().uuid(),
+  family_id: z.string().uuid(),
+  actor_id: z.string().uuid(),
+  action: z.string(),
+  target_type: z.string(),
+  target_id: z.string().uuid(),
+  summary: z.string().nullable(),
+  metadata: z.record(z.unknown()).default({}),
+  created_at: z.string(),
+  actor_name: z.string().nullable().optional(),
+  actor_avatar: z.string().nullable().optional(),
+});
+
+// ============================================================================
 // Inferred TypeScript types
 // ============================================================================
 
@@ -427,6 +559,14 @@ export type Message = z.infer<typeof MessageSchema>;
 export type MessageReaction = z.infer<typeof MessageReactionSchema>;
 export type ReadState = z.infer<typeof ReadStateSchema>;
 export type NotificationEvent = z.infer<typeof NotificationEventSchema>;
+export type LegacyVault = z.infer<typeof LegacyVaultSchema>;
+export type VaultItem = z.infer<typeof VaultItemSchema>;
+export type VaultRecipient = z.infer<typeof VaultRecipientSchema>;
+export type InheritanceScenario = z.infer<typeof InheritanceScenarioSchema>;
+export type DigitalSuccessor = z.infer<typeof DigitalSuccessorSchema>;
+export type MemorialProfile = z.infer<typeof MemorialProfileSchema>;
+export type SearchResult = z.infer<typeof SearchResultSchema>;
+export type ActivityLog = z.infer<typeof ActivityLogSchema>;
 
 // ============================================================================
 // Serialization helpers
