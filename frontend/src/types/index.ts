@@ -305,6 +305,100 @@ export const MealPlanSchema = z.object({
 });
 
 // ============================================================================
+// Phase 6: Chat, Messages, Notifications
+// ============================================================================
+
+export const CONVERSATION_TYPES = ['direct', 'group'] as const;
+export type ConversationType = (typeof CONVERSATION_TYPES)[number];
+
+export const MESSAGE_TYPES = ['text', 'image', 'video', 'file', 'system', 'shared_link'] as const;
+export type MessageType = (typeof MESSAGE_TYPES)[number];
+
+export const CONVERSATION_MEMBER_ROLES = ['admin', 'member'] as const;
+export type ConversationMemberRole = (typeof CONVERSATION_MEMBER_ROLES)[number];
+
+export const NOTIFICATION_CHANNELS = ['in_app', 'push', 'email'] as const;
+export type NotificationChannel = (typeof NOTIFICATION_CHANNELS)[number];
+
+export const NOTIFICATION_LEVELS = ['all', 'mentions_only', 'muted'] as const;
+export type NotificationLevel = (typeof NOTIFICATION_LEVELS)[number];
+
+export const DELIVERY_STATES = ['sending', 'sent', 'delivered', 'read'] as const;
+export type DeliveryState = (typeof DELIVERY_STATES)[number];
+
+export const ConversationSchema = z.object({
+  id: z.string().uuid(),
+  family_id: z.string().uuid(),
+  type: z.enum(CONVERSATION_TYPES),
+  title: z.string().nullable(),
+  avatar_url: z.string().nullable(),
+  created_by: z.string().uuid(),
+  is_archived: z.boolean(),
+  metadata: z.record(z.unknown()).default({}),
+  last_message_at: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export const ConversationMemberSchema = z.object({
+  id: z.string().uuid(),
+  conversation_id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  role: z.enum(CONVERSATION_MEMBER_ROLES),
+  is_muted: z.boolean(),
+  joined_at: z.string(),
+  left_at: z.string().nullable(),
+  user: UserSchema.pick({ id: true, display_name: true, avatar_url: true }).optional(),
+});
+
+export const MessageSchema = z.object({
+  id: z.string().uuid(),
+  conversation_id: z.string().uuid(),
+  sender_id: z.string().uuid(),
+  content: z.string().nullable(),
+  message_type: z.enum(MESSAGE_TYPES),
+  reply_to_id: z.string().uuid().nullable(),
+  media_id: z.string().uuid().nullable(),
+  shared_content: z.record(z.string(), z.unknown()).nullable(),
+  edited_at: z.string().nullable(),
+  deleted_at: z.string().nullable(),
+  metadata: z.record(z.unknown()).default({}),
+  created_at: z.string(),
+  sender: UserSchema.pick({ id: true, display_name: true, avatar_url: true }).optional(),
+});
+
+export const MessageReactionSchema = z.object({
+  id: z.string().uuid(),
+  message_id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  emoji: z.string(),
+  created_at: z.string(),
+});
+
+export const ReadStateSchema = z.object({
+  id: z.string().uuid(),
+  conversation_id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  last_read_message_id: z.string().uuid().nullable(),
+  last_read_at: z.string(),
+});
+
+export const NotificationEventSchema = z.object({
+  id: z.string().uuid(),
+  family_id: z.string().uuid().nullable(),
+  user_id: z.string().uuid(),
+  type: z.string(),
+  title: z.string(),
+  body: z.string().nullable(),
+  data: z.record(z.unknown()).default({}),
+  channel: z.enum(NOTIFICATION_CHANNELS),
+  status: z.string(),
+  source_id: z.string().uuid().nullable(),
+  source_type: z.string().nullable(),
+  created_at: z.string(),
+});
+
+// ============================================================================
 // Inferred TypeScript types
 // ============================================================================
 
@@ -327,6 +421,12 @@ export type Recipe = z.infer<typeof RecipeSchema>;
 export type RecipeIngredient = z.infer<typeof RecipeIngredientSchema>;
 export type RecipeStep = z.infer<typeof RecipeStepSchema>;
 export type MealPlan = z.infer<typeof MealPlanSchema>;
+export type Conversation = z.infer<typeof ConversationSchema>;
+export type ConversationMember = z.infer<typeof ConversationMemberSchema>;
+export type Message = z.infer<typeof MessageSchema>;
+export type MessageReaction = z.infer<typeof MessageReactionSchema>;
+export type ReadState = z.infer<typeof ReadStateSchema>;
+export type NotificationEvent = z.infer<typeof NotificationEventSchema>;
 
 // ============================================================================
 // Serialization helpers

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/auth-store';
+import { NotificationBell } from '@/components/notification-bell';
 import type { ReactNode } from 'react';
 
 const NAV_ITEMS = [
@@ -14,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/location', label: 'Location', icon: '📍' },
   { href: '/recipes', label: 'Recipes', icon: '🍳' },
   { href: '/meals', label: 'Meals', icon: '🥗' },
+  { href: '/chat', label: 'Chat', icon: '💬' },
   { href: '/admin', label: 'Admin', icon: '⚙️' },
 ] as const;
 
@@ -38,6 +40,7 @@ export function NavShell({ children }: NavShellProps) {
             ɳFamily
           </Link>
           <div className="flex items-center gap-3">
+            <NotificationBell />
             {user && (
               <span className="hidden text-sm text-slate-600 dark:text-slate-400 sm:block">
                 {user.display_name ?? user.email}
