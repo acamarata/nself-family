@@ -1,0 +1,51 @@
+{
+  "app": {
+    "name": "ɳFamily",
+    "tagline": "مساحة العائلة الخاصة بك"
+  },
+  "nav": {
+    "feed": "الخلاصة",
+    "family": "العائلة",
+    "albums": "الألبومات",
+    "calendar": "التقويم",
+    "logout": "تسجيل الخروج"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "displayName": "الاسم المعروض",
+    "loginTitle": "مرحباً بك في ɳFamily",
+    "loginSubtitle": "سجّل الدخول إلى مساحة عائلتك",
+    "registerTitle": "أنشئ حسابك",
+    "registerSubtitle": "انضم إلى ɳFamily للتواصل مع أحبائك",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "signingIn": "جارٍ تسجيل الدخول...",
+    "creatingAccount": "جارٍ إنشاء الحساب...",
+    "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "passwordsMustMatch": "كلمات المرور غير متطابقة"
+  },
+  "feed": {
+    "empty": "لا توجد منشورات بعد. كن أول من يشارك شيئاً!",
+    "composerPlaceholder": "ماذا يحدث في عائلتك؟",
+    "composerBodyPlaceholder": "شارك مع عائلتك...",
+    "titlePlaceholder": "العنوان (اختياري)",
+    "post": "نشر",
+    "posting": "جارٍ النشر...",
+    "loadMore": "تحميل المزيد",
+    "loadingMore": "جارٍ التحميل..."
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "edit": "تعديل",
+    "continue": "متابعة",
+    "loading": "جارٍ التحميل..."
+  }
+}

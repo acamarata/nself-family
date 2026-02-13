@@ -1,0 +1,81 @@
+{
+  "app": {
+    "name": "ɳFamily",
+    "tagline": "Your private family space"
+  },
+  "nav": {
+    "feed": "Feed",
+    "family": "Family",
+    "albums": "Albums",
+    "calendar": "Calendar",
+    "logout": "Log out"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "displayName": "Display name",
+    "loginTitle": "Welcome to ɳFamily",
+    "loginSubtitle": "Sign in to your family space",
+    "registerTitle": "Create your account",
+    "registerSubtitle": "Join ɳFamily to connect with your loved ones",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signingIn": "Signing in...",
+    "creatingAccount": "Creating account...",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordsMustMatch": "Passwords do not match"
+  },
+  "feed": {
+    "empty": "No posts yet. Be the first to share something!",
+    "composerPlaceholder": "What's happening in your family?",
+    "composerBodyPlaceholder": "Share with your family...",
+    "titlePlaceholder": "Title (optional)",
+    "post": "Post",
+    "posting": "Posting...",
+    "loadMore": "Load more",
+    "loadingMore": "Loading more..."
+  },
+  "onboarding": {
+    "createFamily": "Create your family",
+    "familyNamePlaceholder": "e.g., The Smiths",
+    "inviteMembers": "Invite family members",
+    "setupProfile": "Set up your profile",
+    "done": "You're all set!",
+    "doneSubtitle": "Your family space is ready. Start by sharing your first post.",
+    "goToFeed": "Go to your feed"
+  },
+  "family": {
+    "members": "Family Members",
+    "relationships": "Relationship Graph",
+    "noMembers": "No members yet.",
+    "noRelationships": "No relationships defined yet.",
+    "roles": {
+      "OWNER": "Owner",
+      "ADMIN": "Admin",
+      "ADULT_MEMBER": "Adult",
+      "YOUTH_MEMBER": "Youth",
+      "CHILD_MEMBER": "Child",
+      "DEVICE": "Device"
+    }
+  },
+  "media": {
+    "dropzone": "Drop photos/videos here or click to browse",
+    "unsupportedType": "Unsupported file type",
+    "fileTooLarge": "File too large (max 50MB)",
+    "processing": "Processing...",
+    "uploadFailed": "Upload failed"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "edit": "Edit",
+    "continue": "Continue",
+    "loading": "Loading..."
+  }
+}
