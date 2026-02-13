@@ -10,6 +10,10 @@ const NAV_ITEMS = [
   { href: '/family', label: 'Family', icon: '👨‍👩‍👧‍👦' },
   { href: '/albums', label: 'Albums', icon: '📸' },
   { href: '/calendar', label: 'Calendar', icon: '📅' },
+  { href: '/trips', label: 'Trips', icon: '✈️' },
+  { href: '/location', label: 'Location', icon: '📍' },
+  { href: '/recipes', label: 'Recipes', icon: '🍳' },
+  { href: '/meals', label: 'Meals', icon: '🥗' },
   { href: '/admin', label: 'Admin', icon: '⚙️' },
 ] as const;
 
