@@ -93,7 +93,7 @@ export default function VaultPage() {
 
       {tab === 'received' && (
         <div className="space-y-3">
-          {releasedVaults.map((rv: { vault: LegacyVault; message: string | null; viewed_at: string | null }, i: number) => (
+          {releasedVaults.map((rv: { vault: LegacyVault & { vault_items?: VaultItem[] }; message: string | null; viewed_at: string | null }, i: number) => (
             <div key={rv.vault.id} className="rounded-lg border border-slate-200 p-4 dark:border-slate-700">
               <h3 className="font-medium">{rv.vault.title}</h3>
               {rv.message && <p className="mt-1 text-sm italic text-slate-500">&ldquo;{rv.message}&rdquo;</p>}
@@ -103,7 +103,7 @@ export default function VaultPage() {
               </p>
               {rv.vault.vault_items && rv.vault.vault_items.length > 0 && (
                 <div className="mt-3 space-y-2">
-                  {(rv.vault as LegacyVault & { vault_items: VaultItem[] }).vault_items.map((item: VaultItem) => (
+                  {rv.vault.vault_items.map((item: VaultItem) => (
                     <div key={item.id} className="rounded bg-slate-50 p-3 dark:bg-slate-800">
                       <div className="text-xs font-medium uppercase text-slate-400">{item.content_type}</div>
                       {item.title && <div className="font-medium">{item.title}</div>}

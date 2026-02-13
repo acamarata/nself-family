@@ -40,7 +40,7 @@ const DEVICE_TYPE_ICONS: Record<string, string> = {
  * Device management page — register, monitor, and revoke devices.
  */
 export default function DevicesPage() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   const familyId = useFamilyStore((s) => s.activeFamilyId);
   const userId = useAuthStore((s) => s.user?.id);

@@ -108,7 +108,7 @@ export default function ChatPage() {
 function CreateConversationModal({ onClose }: { onClose: () => void }) {
   const familyId = useFamilyStore((s) => s.activeFamilyId);
   const userId = useAuthStore((s) => s.user?.id);
-  const { data: members = [] } = useFamilyMembers();
+  const { data: members = [] } = useFamilyMembers(familyId);
   const createConversation = useCreateConversation();
   const [type, setType] = useState<'direct' | 'group'>('direct');
   const [title, setTitle] = useState('');

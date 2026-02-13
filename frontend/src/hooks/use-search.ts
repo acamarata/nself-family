@@ -65,7 +65,7 @@ const ACTIVITY_FEED_QUERY = `
  * @returns Query result with search results
  */
 export function useSearch(query: string, contentTypes?: string[]) {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const familyId = useFamilyStore((s) => s.activeFamilyId);
 
   return useInfiniteQuery({
@@ -95,7 +95,7 @@ export function useSearch(query: string, contentTypes?: string[]) {
  * @returns Query result with activity log
  */
 export function useActivityFeed(limit = 50) {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const familyId = useFamilyStore((s) => s.activeFamilyId);
 
   return useInfiniteQuery({

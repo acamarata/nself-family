@@ -1,6 +1,6 @@
 {
   "name": "nself-family-frontend",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "nFamily - Family management application built on nSelf",
   "scripts": {
     "dev": "next dev",

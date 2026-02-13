@@ -28,7 +28,7 @@ export function useGraphQL() {
   const client = useGraphQLClient();
 
   const execute = useCallback(
-    async <T>(query: string, variables?: Record<string, unknown>): Promise<T> => {
+    async <T = Record<string, any>>(query: string, variables?: Record<string, unknown>): Promise<T> => {
       return client.request<T>(query, variables);
     },
     [client],

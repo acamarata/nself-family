@@ -1,0 +1,95 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    name: Pre-deploy Checks
+    uses: ./.github/workflows/ci.yml
+
+  deploy-frontend:
+    name: Deploy Frontend to Vercel (Staging)
+    needs: [checks]
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install dependencies
+        run: cd frontend && pnpm install --frozen-lockfile
+      - name: Build
+        run: cd frontend && pnpm build
+        env:
+          NEXT_PUBLIC_API_URL: https://family.staging.nself.org/api
+          NEXT_PUBLIC_AUTH_URL: https://family.staging.nself.org/auth
+          NEXT_PUBLIC_WS_URL: wss://family.staging.nself.org/ws
+          NEXT_TELEMETRY_DISABLED: 1
+      - name: Deploy to Vercel
+        run: |
+          npx vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} \
+            --scope=${{ vars.VERCEL_TEAM_ID }} \
+            --env NEXT_PUBLIC_ENVIRONMENT=staging
+        working-directory: frontend
+
+  deploy-backend:
+    name: Deploy Backend to Staging
+    needs: [checks]
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ vars.STAGING_HOST }}
+          username: ${{ secrets.STAGING_SSH_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            cd /opt/nself-family
+            git pull origin main
+            cd backend
+            nself build
+            nself restart
+            nself health
+
+  verify:
+    name: Post-deploy Verification
+    needs: [deploy-frontend, deploy-backend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Health check backend
+        run: |
+          for i in {1..10}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://family.staging.nself.org/api/health || echo "000")
+            if [ "$STATUS" = "200" ]; then
+              echo "Backend healthy"
+              exit 0
+            fi
+            echo "Attempt $i: status $STATUS, retrying in 10s..."
+            sleep 10
+          done
+          echo "Backend health check failed"
+          exit 1
+      - name: Health check frontend
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://family.staging.nself.org || echo "000")
+          if [ "$STATUS" = "200" ] || [ "$STATUS" = "301" ] || [ "$STATUS" = "302" ]; then
+            echo "Frontend healthy"
+          else
+            echo "Frontend health check failed with status $STATUS"
+            exit 1
+          fi

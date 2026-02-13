@@ -9,6 +9,9 @@
 # But DO commit environment templates
 # (These are checked in: .env.dev, .env.staging, .env.prod)
 
+# Docker volumes (local data)
+.volumes/
+
 # Build outputs
 build/
 dist/

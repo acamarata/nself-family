@@ -126,7 +126,7 @@ const APPROVE_MEMORIAL_MUTATION = `
  * @returns Query result with vault array
  */
 export function useVaults() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const userId = useAuthStore((s) => s.user?.id);
   return useQuery({
     queryKey: ['vaults', userId],
@@ -143,7 +143,7 @@ export function useVaults() {
  * @returns Query result with released vault array
  */
 export function useReleasedVaults() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const userId = useAuthStore((s) => s.user?.id);
   return useQuery({
     queryKey: ['released-vaults', userId],
@@ -160,7 +160,7 @@ export function useReleasedVaults() {
  * @returns Mutation for vault creation
  */
 export function useCreateVault() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { family_id: string; owner_id: string; title: string; description?: string; release_condition?: string; release_trigger_at?: string }) => {
@@ -176,7 +176,7 @@ export function useCreateVault() {
  * @returns Mutation for item addition
  */
 export function useAddVaultItem() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { vault_id: string; content_type: string; title?: string; content?: string; media_id?: string; sort_order?: number }) => {
@@ -192,7 +192,7 @@ export function useAddVaultItem() {
  * @returns Mutation for item removal
  */
 export function useRemoveVaultItem() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
@@ -207,7 +207,7 @@ export function useRemoveVaultItem() {
  * @returns Mutation for recipient addition
  */
 export function useAddVaultRecipient() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { vault_id: string; user_id: string; message?: string }) => {
@@ -223,7 +223,7 @@ export function useAddVaultRecipient() {
  * @returns Mutation for recipient removal
  */
 export function useRemoveVaultRecipient() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { vaultId: string; userId: string }) => {
@@ -238,7 +238,7 @@ export function useRemoveVaultRecipient() {
  * @returns Mutation for vault sealing
  */
 export function useSealVault() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
@@ -253,7 +253,7 @@ export function useSealVault() {
  * @returns Query result with successor data
  */
 export function useDigitalSuccessor() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const familyId = useFamilyStore((s) => s.activeFamilyId);
   const userId = useAuthStore((s) => s.user?.id);
   return useQuery({
@@ -271,7 +271,7 @@ export function useDigitalSuccessor() {
  * @returns Mutation for successor assignment
  */
 export function useSetSuccessor() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { family_id: string; owner_id: string; successor_id: string; after_death_action?: string; notes?: string }) => {
@@ -287,7 +287,7 @@ export function useSetSuccessor() {
  * @returns Query result with scenario array
  */
 export function useInheritanceScenarios() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const familyId = useFamilyStore((s) => s.activeFamilyId);
   const userId = useAuthStore((s) => s.user?.id);
   return useQuery({
@@ -305,7 +305,7 @@ export function useInheritanceScenarios() {
  * @returns Mutation for scenario creation
  */
 export function useCreateScenario() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { family_id: string; owner_id: string; version: number; input_snapshot: Record<string, unknown>; output_snapshot: Record<string, unknown> }) => {
@@ -322,7 +322,7 @@ export function useCreateScenario() {
  * @returns Query result with memorial profile
  */
 export function useMemorialProfile(userId?: string) {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   return useQuery({
     queryKey: ['memorial', userId],
     queryFn: async () => {
@@ -338,7 +338,7 @@ export function useMemorialProfile(userId?: string) {
  * @returns Mutation for memorial request
  */
 export function useRequestMemorial() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { user_id: string; family_id: string; requested_by: string; state: string; memorial_message?: string; memorial_date?: string; requested_at?: string }) => {
@@ -354,7 +354,7 @@ export function useRequestMemorial() {
  * @returns Mutation for memorial approval
  */
 export function useApproveMemorial() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { userId: string; approvedBy: string }) => {

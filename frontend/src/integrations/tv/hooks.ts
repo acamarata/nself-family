@@ -71,7 +71,7 @@ export function useTVSession() {
  * @returns Admission mutation and state
  */
 export function useTVAdmission() {
-  const gql = useGraphQL();
+  const { execute: gql } = useGraphQL();
   const userId = useAuthStore((s) => s.user?.id);
   const familyId = useFamilyStore((s) => s.activeFamilyId);
 
